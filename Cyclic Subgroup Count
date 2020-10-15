@@ -1,0 +1,85 @@
+#lcm(x, y) compares to numbers and returns the least common multiple between them.
+
+def lcm(x, y):
+    if x > y:
+        greater = x
+    else:
+        greater = y
+    while(True):
+        if((greater % x == 0) and (greater % y == 0)):
+            lcm = greater
+            break
+        greater += 1
+    return lcm
+
+#gcd(b, c) compares to numbers and returns the greatest common divisor between them
+
+def gcd(b, c):
+    if b > c:
+        small = c
+    else:
+        small = b
+    for i in range(1, small+1):
+        if ((b % i == 0) and (c % i == 0)):
+            gcd = i
+    return gcd
+
+#rel(value) teakes in a value and returns a total count of the number of values less
+than the input that are relatively prime to the input (i.e. gcd(a, b) = 1)
+
+def rel(value):
+    total = 0
+    for a in range(1, value + 1):
+        if gcd(a, value) == 1:
+            total = total + 1
+    return total
+    
+#the following function returns a list of divisors of a specified number
+
+def listofdiv(value):
+    listofdiv = []
+    for k in range(1, value+1):
+        if value % k == 0:
+            listofdiv.append(k)
+    return listofdiv if listofdiv else "This set is empty"
+    
+#for the following functions value1 = the order of one group, value2 = the order of a second group, 
+and value3 = the order of the cyclic subgroups you're counting. 
+
+#ecountlist takes in your inputs, finds the pairs that produce value3 as a least common multiple,
+then returns the pruduct of the numbers in each pair
+
+def elcountlist(value1, value2, value3):
+    listofcases = []
+    for s in listofdiv(value1):
+        for t in listofdiv(value2):
+            if lcm(s,t) == value3:
+                listofcases.append((rel(s)*rel(t)))
+    return listofcases if listofcases else "This set is empty"
+
+#similar to the function above except it returns the pairs. It's a nice way to make sure that everything is
+working as it sholuld.
+
+def elpairs(value1, value2, value3):
+    listofcases = []
+    for s in listofdiv(value1):
+        for t in listofdiv(value2):
+            if lcm(s,t) == value3:
+                listofcases.append((s,t))
+    return listofcases if listofcases else "This set is empty"
+
+#elcount adds the values inside the list returned by elcountlist
+
+def elcount(value1, value2, value3):
+    list1 = elcountlist(value1, value2, value3)
+    total = 0
+    for l in list1:
+        sum(list1)
+        total = sum(list1) 
+    return total
+
+#divides the number of elements of a particlar order by the number of generators of that order.
+
+def cycsubcount(value1, value2, value3):
+    total  =  elcount(value1, value2, value3)//rel(value3)
+    return total
