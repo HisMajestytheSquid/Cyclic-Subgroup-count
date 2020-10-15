@@ -24,7 +24,7 @@ def gcd(b, c):
             gcd = i
     return gcd
 
-#rel(value) teakes in a value and returns a total count of the number of values less
+#rel(value) takes in a value and returns a total count of the number of values less
 than the input that are relatively prime to the input (i.e. gcd(a, b) = 1)
 
 def rel(value):
