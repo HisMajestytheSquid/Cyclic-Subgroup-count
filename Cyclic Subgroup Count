@@ -47,7 +47,7 @@ def listofdiv(value):
 and value3 = the order of the cyclic subgroups you're counting. 
 
 #ecountlist takes in your inputs, finds the pairs that produce value3 as a least common multiple,
-then returns the pruduct of the numbers in each pair
+then returns the product of the numbers input into the rel function of each pair.
 
 def elcountlist(value1, value2, value3):
     listofcases = []
