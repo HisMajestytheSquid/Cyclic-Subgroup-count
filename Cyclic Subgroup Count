@@ -24,11 +24,13 @@ def rel(value):
 #the following function returns a list of divisors of a specified number
 
 def listofdiv(value):
-    listofdiv = []
+    # listofdiv = [] # Shadowing the name of the function with a variable of the same name might not be what you want to do
     for k in range(1, value + 1):
         if value % k == 0:
             listofdiv.append(k)
-    return listofdiv if listofdiv else "This set is empty"
+            
+    return [k for k in range(1, value + 1) if value % k == 0] # using list comprehensions is the "Pythonic" way to do this
+    # you iterate over this later, so returning a string might make for a confusing side effect
     
 #for the following functions value1 = the order of one group, value2 = the order of a second group, 
 and value3 = the order of the cyclic subgroups you're counting. 
@@ -44,7 +46,10 @@ def elcountlist(value1, value2, value3):
         for t in list2:
             if lcm(s,t) == value3:
                 listofcases.append((rel(s)*rel(t)))
-    return listofcases if listofcases else "This set is empty"
+    return listofcases # if listofcases else "This set is empty" # I did the same thing here, you want functions that generate data to actually generate the data, not error messages
+    # if you want to let the user know that it's bad that the set is empty, you could raise an error, like so:
+    # if not listofcases:
+    #     raise ValueError("This set is empty")
 
 #similar to the function above except it returns the pairs. It's a nice way to make sure that everything is
 working as it sholuld.
@@ -58,16 +63,42 @@ def elpairs(value1, value2, value3):
             if lcm(s,t) == value3:
                 listofcases.append((s,t))
     return listofcases if listofcases else "This set is empty"
+    
+# you could rewrite elcountlist and elpairs using a callback function, like so:
+def ellist_gen(value1, value2, value3, add_as=None): # Also value1, value2, value3 are enormously unclear. What are these? groups? Graphs? sets? Naming is hard, but try a little harder to make it clear in the names
+    def pair(s, t):
+        return s, t
+    def rel_product(s, t):
+        return rel(s) * rel(t)
+        
+    if add_as is None:
+        add_as = pair
+        
+    listofcases = []
+    list1 = listofdiv(value1)
+    list2 = listofdiv(value2)
+    for s in list1:
+        for t in list2:
+            if lcm(s,t) == value3:
+                listofcases.append(add_as(s, t))
+    return listofcases
+# Then the two functions above boil down to:
+def elcountlist_refactor(*args): # *args is a generic way to make a list of arguments, you can call this with any number of args
+    def rel_product(s, t): 
+        return rel(s) * rel(t)
+        
+    # by calling this with *args, we take each arg in the list `args` and pass it as a parameter to ellist_gen
+    return ellist_gen(*args, add_as=rel_product) # add the data as a product of rel()
 
 #elcount adds the values inside the list returned by elcountlist
 
 def elcount(value1, value2, value3):
-    list1 = elcountlist(value1, value2, value3)
-    total = 0
-    for l in list1:
-        sum(list1)
-        total = sum(list1) 
-    return total
+    #list1 = elcountlist(value1, value2, value3)
+    #total = 0
+    #for l in list1:
+    #    sum(list1)
+    #    total = sum(list1) # this doesnt compute anything new, just redoes the computation a bunch of times; was that the intent?
+    return sum(elcountlist(value1, value2, value3)) # simpler and more pythonic way to do this
 
 #divides the number of elements of a particlar order by the number of generators of that order.
 
