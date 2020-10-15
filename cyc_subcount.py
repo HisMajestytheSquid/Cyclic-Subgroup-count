@@ -1,33 +1,32 @@
-#lcm returns the leat common multiple of two inputs.
 
 def lcm(x, y):
-    lcm = (x*y)//gcd(x, y)
-    return lcm
+    """lcm returns the leat common multiple of two inputs."""
+    return (x*y) // gcd(x, y)
 
-#gcd returns the greatest common division of two inputs.
 
-def gcd(b, c): 
-  
-   while(c): 
-       b, c = c, b % c 
-  
-   return b
+def gcd(b, c):
+    """gcd returns the greatest common division of two inputs."""
+    while c:
+        b, c = c, b % c
+    return b
 
-#rel goes through the defined range and finds the values that have gcd(v,k) = 1, then returns a count of those values
-#for more information about this search the term Euler totient function
 
 def rel(v):
+    """
+    rel goes through the defined range and finds the values that have gcd(v,k) = 1, then returns a count of those values
+    for more information about this search the term Euler totient function.
+    """
     total = 0
     for a in range(1, v + 1):
         if gcd(a, v) == 1:
             total = total + 1
     return total
 
-#listofdiv takes in an input and lists all of its divisors to include itself in a bracketed list
 
 def listofdiv(v):
-    listofdiv = [k for k in range(1, v + 1) if not v % k]
-    return listofdiv
+    """takes in an input and lists all of its divisors to include itself in a bracketed list"""
+    return [k for k in range(1, v + 1) if not v % k]
+
 #v1 = order of first group, v2 = order of second group, and v3 = order of the subgroups you're attempting to count.
 
 #elcountlist calls listofdiv for three and searches for pairs of numbers in the divisors of v1 and v2 which produce lcm = v3.
@@ -40,7 +39,7 @@ def elcountlist(v1, v2, v3):
     list2 = listofdiv(v2)
     for s in list1:
         for t in list2:
-            if lcm(s,t) == v3:
+            if lcm(s, t) == v3:
                 listofcases.append((rel(s)*rel(t)))
     return listofcases
 
@@ -63,16 +62,12 @@ def elpairs(v1, v2, v3):
 
 def elcount(v1, v2, v3):
     list1 = elcountlist(v1, v2, v3)
-    total = 0
-    for l in list1:
-        sum(list1)
-        total = sum(list1) 
-    return total
+    return sum(list1)
 
 #cycsubcount calls both elcount and rel and divides the former by the latter to give you the number of cyclic subgroups.
 
 def cycsubcount(v1, v2, v3):
-    total  =  elcount(v1, v2, v3)//rel(v3)
+    total  =  elcount(v1, v2, v3) // rel(v3)
     return total
 
 #the following are test prints to show you what everything will give you when evaluated individually
